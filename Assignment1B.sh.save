@@ -1,0 +1,167 @@
+#Assignment 1B
+
+
+create()
+{
+echo "Enter address book name"
+read ab
+res= ls | grep $ab | wc -w
+
+if [ "$res" = 0 ]
+then
+echo "Error: file is already existing!"
+
+else
+touch $ab
+echo "Address Book created!"
+
+fi
+}
+
+display()
+{
+echo "Enter address book name"
+read ab
+res= ls | grep $ab | wc -w
+
+if [ "$res" = 0 ]
+then
+cat $ab
+
+else
+echo "Error: file is already existing!"
+
+fi
+}
+
+
+
+insert()
+{
+echo "Enter address book name"
+read ab
+#check address book is available or not in current working directory
+res= ls | grep $ab | wc -w
+
+if [ "$res" = 0 ]
+then
+echo "Enter email"
+read email
+
+#check email is present in address book or not
+len= cat $ab | grep $email | wc -w
+if [ "$len" = 0 ]
+then
+echo "Error: Email already existing!"
+
+else
+echo "Enter First name, Last name, mobile number"
+read fname lname mobile
+
+record=echo $fname $lname $email $mobile
+echo $record >> $ab
+echo "Record Inserted!"
+fi
+
+else
+echo Error: file is not Existing!
+
+fi
+}
+
+modify()
+{
+echo "Enter address book name"
+read ab
+res= ls | grep $ab | wc -w
+
+if [ "$res" = 0 ]
+then
+echo "Enter email"
+read email
+
+len= cat $ab | grep $email | wc -w
+if [ "$len" = 0 ]
+then
+echo "Enter modified first name, last name, mobile no"
+read fname lname mobileno
+new= echo $fname $lname $email $mobileno
+old= cat $ab | grep $email
+
+echo Old Record: $old
+echo New Record: $new
+
+else
+echo "Error:email not existing!"
+
+fi
+
+else
+echo "Error: file not existing!"
+
+fi
+}
+
+delete()
+{
+echo "Enter address book name"
+read ab
+res= ls | grep $ab | wc -w
+
+if [ "$res" = 0 ]
+then
+echo "Enter email"
+read email
+len= cat $ab | grep $email | wc -w
+if [ "$len" = 0 ]
+then
+old= cat $ab | grep $email
+
+sed -i s/"$old"//g $ab
+sed -i /^$/d $ab
+echo "Record Deleted!"
+
+else
+echo "Error: email not existing!"
+
+fi
+
+else
+echo "Error: file not existing!"
+fi
+}
+
+while true;
+do
+echo "***************************MENU*******************************"
+echo "1. Create"
+echo "2. Display"
+echo "3. Insert"
+echo "4. Search"
+echo "5. Modify"
+echo "6. Delete"
+echo "7. Exit"
+
+echo "Enter Choice"
+read choice
+
+case $choice in
+
+1) create ;;
+
+2) display ;;
+
+3) insert ;;
+
+4) search ;;
+
+5) modify ;;
+
+6) delete ;;
+
+7) exit ;;
+
+*)echo "wrong Choice" ;;
+esac
+
+done
